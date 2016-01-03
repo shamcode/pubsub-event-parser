@@ -2,13 +2,44 @@
 
 [![Build Status](https://travis-ci.org/shamcode/pubsub-event-parser.svg?branch=master)](https://travis-ci.org/shamcode/pubsub-event-parser)
 
-A simple search using events [PubSubJs library](https://github.com/mroderick/PubSubJS) for further documentation
+A simple search using events [PubSubJs library](https://github.com/mroderick/PubSubJS)
 
 ###Setup
+```
+npm install pubsub-event-parser
+```
 
+###Usage
+From command line 
+```
+node node_modules/pubsub-event-parser/main.js path/to/source/file/or/directory
+```
+As node.js module:
+```js
+var pubsubParser = require( "pubsub-event-parser" );
 
+// Parse directory or file
+pubsubParser.processPath( {
+  path: "path/to/your/code",
+  finishCallback: function( store ) {
+      Object.keys( store.byName ).forEach( function( eventName ) {
+        console.log( eventName );  
+      } )
+  }
+} )
 
-[Documentation](http://shamcode.github.io/pubsub-event-parser/docs/index.html)
+// Parse code string
+var store = new pubsubParser.Store()
+pubsubParser.procecCode( 
+  "( function() { PubSub.publish( 'foo', { 'bar': 1 } ); } )", 
+  "", 
+  store 
+);
+console.log( store.byName.foo.publish[ 0 ].code );
+```
+
+###Documentation
+See generated JSDoc on [site](http://shamcode.github.io/pubsub-event-parser/docs/index.html)
 
 ### License
 The MIT License (MIT)
