@@ -1,8 +1,10 @@
 # PubSub event using parser
 
+[![Build Status](https://travis-ci.org/shamcode/pubsub-event-parser.svg?branch=master)](https://travis-ci.org/shamcode/pubsub-event-parser)
 
-## Documentation
+A simple search using events [PubSubJs library](https://github.com/mroderick/PubSubJS) for further documentation
 
+[Documentation](http://shamcode.github.io/pubsub-event-parser/docs/index.html)
 
 ### License
 The MIT License (MIT)
