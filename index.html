@@ -41,9 +41,49 @@
 
 <p><a href="https://travis-ci.org/shamcode/pubsub-event-parser"><img src="https://travis-ci.org/shamcode/pubsub-event-parser.svg?branch=master" alt="Build Status"></a></p>
 
-<p>A simple search using events <a href="https://github.com/mroderick/PubSubJS">PubSubJs library</a> for further documentation</p>
+<p>A simple search using events <a href="https://github.com/mroderick/PubSubJS">PubSubJs library</a></p>
 
-<p><a href="http://shamcode.github.io/pubsub-event-parser/docs/index.html">Documentation</a></p>
+<h3>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setup</h3>
+
+<pre><code>npm install pubsub-event-parser
+</code></pre>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<p>From command line </p>
+
+<pre><code>node node_modules/pubsub-event-parser/main.js path/to/source/file/or/directory
+</code></pre>
+
+<p>As node.js module:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> pubsubParser <span class="pl-k">=</span> <span class="pl-c1">require</span>( <span class="pl-s"><span class="pl-pds">"</span>pubsub-event-parser<span class="pl-pds">"</span></span> );
+
+<span class="pl-c">// Parse directory or file</span>
+<span class="pl-smi">pubsubParser</span>.<span class="pl-en">processPath</span>( {
+  path<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>path/to/your/code<span class="pl-pds">"</span></span>,
+  <span class="pl-en">finishCallback</span><span class="pl-k">:</span> <span class="pl-k">function</span>( <span class="pl-smi">store</span> ) {
+      <span class="pl-smi">Object</span>.<span class="pl-en">keys</span>( <span class="pl-smi">store</span>.<span class="pl-smi">byName</span> ).<span class="pl-en">forEach</span>( <span class="pl-k">function</span>( <span class="pl-smi">eventName</span> ) {
+        <span class="pl-en">console</span>.<span class="pl-c1">log</span>( eventName );  
+      } )
+  }
+} )
+
+<span class="pl-c">// Parse code string</span>
+<span class="pl-k">var</span> store <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">pubsubParser.Store</span>()
+<span class="pl-smi">pubsubParser</span>.<span class="pl-en">procecCode</span>( 
+  <span class="pl-s"><span class="pl-pds">"</span>( function() { PubSub.publish( 'foo', { 'bar': 1 } ); } )<span class="pl-pds">"</span></span>, 
+  <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, 
+  store 
+);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>( <span class="pl-smi">store</span>.<span class="pl-smi">byName</span>.<span class="pl-smi">foo</span>.<span class="pl-smi">publish</span>[ <span class="pl-c1">0</span> ].<span class="pl-c1">code</span> );</pre></div>
+
+<h3>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h3>
+
+<p>See generated JSDoc on <a href="http://shamcode.github.io/pubsub-event-parser/docs/index.html">site</a></p>
 
 <h3>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h3>
