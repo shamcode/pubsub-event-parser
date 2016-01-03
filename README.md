@@ -4,6 +4,10 @@
 
 A simple search using events [PubSubJs library](https://github.com/mroderick/PubSubJS) for further documentation
 
+###Setup
+
+
+
 [Documentation](http://shamcode.github.io/pubsub-event-parser/docs/index.html)
 
 ### License

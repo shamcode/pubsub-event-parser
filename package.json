@@ -1,7 +1,17 @@
 {
   "name": "pubsub-event-parser",
   "version": "0.0.1",
-  "description": "PubSub event using parser",
+  "description": "A simple search using events PubSubJs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shamcode/pubsub-event-parser.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shamcode/pubsub-event-parser/issues"
+  },
+  "homepage": "http://shamcode.github.io/pubsub-event-parser/",
+  "main": "main.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
