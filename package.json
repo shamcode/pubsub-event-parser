@@ -1,0 +1,24 @@
+{
+  "name": "pubsub-event-parser",
+  "version": "0.0.1",
+  "description": "PubSub event using parser",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "gulp": "^3.9.0",
+    "gulp-complexity": "^0.3.2",
+    "gulp-jscpd": "0.0.6",
+    "gulp-jscs": "^1.4.0",
+    "gulp-shell": "^0.5.1",
+    "jsdoc": "^3.4.0",
+    "mocha": "^2.3.4",
+    "pubsub-js": "^1.5.3"
+  },
+  "dependencies": {
+    "esprima": "^2.7.1",
+    "estraverse": "^4.1.1",
+    "walk": "^2.3.9"
+  }
+}
