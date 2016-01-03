@@ -1,6 +1,6 @@
 var expect = require( "chai" ).expect,
-    Store = require( "../store" ),
-    processCode  = require( "../process-code" );
+    Store = require( "../main" ).Store,
+    processCode  = require( "../main" ).processCode;
 
 describe( "Processing code", function() {
 

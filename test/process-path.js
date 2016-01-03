@@ -1,5 +1,5 @@
 var expect = require( "chai" ).expect,
-    processPath  = require( "../process-path" );
+    processPath  = require( "../main" ).processPath;
 
 describe( "Processing path", function() {
 
