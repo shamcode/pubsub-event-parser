@@ -104,20 +104,20 @@ function parse( node, parent, code, filePath ) {
  * returning true or false as appropriate
  * @param {String} string       Subject string
  * @param {String} searchString The characters to be searched for at the end of this string
- * @returns {boolean}
+ * @returns {Boolean}
  * @private
  */
 function endsWith( string, searchString ) {
-    var postion = string.length - searchString.length,
-        lastIndex = string.indexOf( searchString, postion );
+    var position = string.length - searchString.length,
+        lastIndex = string.indexOf( searchString, position );
     return lastIndex !== -1 &&
-        lastIndex === postion;
+        lastIndex === position;
 }
 
 /**
  * Parse pubsub name for
  * @param {Object} ast AST-tree
- * @returns {string} Name of pubsub module
+ * @returns {String} Name of pubsub module
  */
 function findPubSubName( ast ) {
     var result = "PubSub";
@@ -156,7 +156,7 @@ function findPubSubName( ast ) {
  * @param {String} code                 Listing of code
  * @param {String} filePath             Absolute  path to listing file
  * @param {module:store~Store} store    Event occurrence store @see store
- * @param {=Boolean} amdImport          Preliminary search of importers PubSub with define
+ * @param {Boolean} [amdImport]          Preliminary search of importers PubSub with define
  */
 function processCode( code, filePath, store, amdImport ) {
     var pubsubName;
