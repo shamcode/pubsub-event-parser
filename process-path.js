@@ -20,6 +20,8 @@ var fs = require( "fs" ),
  * @property {String} path                             Path for processing
  * @property {module:store~Store} store                Occurrence event store
  * @property {module:process-path~processPathCallback} finishCallback Done callback
+ * @property {Boolean} amdImport                       Preliminary search of importers PubSub with
+ *                                                     define
  */
 
 /**
@@ -30,6 +32,9 @@ var fs = require( "fs" ),
 function defaultOptions( opt ) {
     if ( opt.store === undefined ) {
         opt.store = new Store();
+    }
+    if ( opt.amdImport === undefined ) {
+        opt.amdImport = false;
     }
 }
 
@@ -61,7 +66,7 @@ function processPath( opt ) {
             // Read file and process content
             fs.readFile( filePath, "utf8", function( err, code ) {
 
-                processCode( code, filePath, opt.store );
+                processCode( code, filePath, opt.store, opt.amdImport );
 
                 // Process next file
                 next();

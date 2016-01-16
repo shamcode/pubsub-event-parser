@@ -100,12 +100,66 @@ function parse( node, parent, code, filePath ) {
 }
 
 /**
+ * Determines whether a string ends with the characters of another string,
+ * returning true or false as appropriate
+ * @param {String} string       Subject string
+ * @param {String} searchString The characters to be searched for at the end of this string
+ * @returns {boolean}
+ * @private
+ */
+function endsWith( string, searchString ) {
+    var postion = string.length - searchString.length,
+        lastIndex = string.indexOf( searchString, postion );
+    return lastIndex !== -1 &&
+        lastIndex === postion;
+}
+
+/**
+ * Parse pubsub name for
+ * @param {Object} ast AST-tree
+ * @returns {string} Name of pubsub module
+ */
+function findPubSubName( ast ) {
+    var result = "PubSub";
+    estraverse.traverse( ast, {
+        enter: function( node ) {
+            var dependenciesArgsIndex,
+                dependencies,
+                i;
+
+            if ( node.type === esprima.Syntax.CallExpression &&
+                node.callee.name === "define" ) {
+                for ( i = 0; i < node.arguments.length; i++ ) {
+                    if ( node.arguments[ i ].type === esprima.Syntax.ArrayExpression ) {
+                        dependenciesArgsIndex = i;
+                        break;
+                    }
+                }
+
+                dependencies = node.arguments[ dependenciesArgsIndex ].elements;
+
+                for ( i = 0; i < dependencies.length; i++ ) {
+                    if ( endsWith( dependencies[ i ].value.toLowerCase(), "pubsub" ) ) {
+                        result = node.arguments[ dependenciesArgsIndex + 1 ].params[ i ].name;
+                        this.break();
+                        break;
+                    }
+                }
+            }
+        }
+    } );
+    return result;
+}
+
+/**
  * Parsing code, find all occurrence PubSub event and save in store
  * @param {String} code                 Listing of code
  * @param {String} filePath             Absolute  path to listing file
  * @param {module:store~Store} store    Event occurrence store @see store
+ * @param {=Boolean} amdImport          Preliminary search of importers PubSub with define
  */
-function processCode( code, filePath, store ) {
+function processCode( code, filePath, store, amdImport ) {
+    var pubsubName;
     try {
 
         // Parse and build AST-tree, see https://en.wikipedia.org/wiki/Abstract_syntax_tree
@@ -123,6 +177,8 @@ function processCode( code, filePath, store ) {
         return;
     }
 
+    pubsubName = amdImport ? findPubSubName( ast ) : "PubSub";
+
     // Search all MemberCall for PubSub
     estraverse.traverse( ast, {
         enter: function( node, parent ) {
@@ -130,7 +186,7 @@ function processCode( code, filePath, store ) {
 
             // Search MemberExpression of PubSub
             if ( node.type === esprima.Syntax.MemberExpression &&
-                node.object.name === "PubSub" &&
+                node.object.name === pubsubName &&
                 TYPES.indexOf( node.property.name ) > -1 &&
                 parent.arguments !== undefined ) {
 

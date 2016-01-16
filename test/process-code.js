@@ -200,4 +200,110 @@ describe( "Processing code", function() {
         } );
     } );
 
+    describe( "Using amdImport option", function() {
+        describe( "Using define without module name", function() {
+            var sample,
+                store;
+
+            sample = function() {
+                define( [
+                    "jquery",
+                    "../node_modules/pubsub-js/src/pubsub"
+                ], function( $, pubsub ) {
+                    pubsub.subscribe( "foo", function() {
+                        pubsub.subscribe( "bar", function() {
+                            pubsub.publish( "foo", 1 );
+                        } )
+                    } );
+
+                    /* This incorrect */
+                    PubSub.publish( "bar", 2 );
+                    PubSub.subscribe( "foo", function() {
+                        return 1;
+                    } )
+                } );
+            };
+
+            store = new Store();
+
+            processCode( "(" + sample.toString().replace( /\s+/g, "" ) + ")", "", store, true );
+
+            describe( "Event parsed foo", function() {
+                it( "Count publish eq 1", function() {
+                    expect( store.byName ).to.have.deep.property( "foo.publish" )
+                        .that.to.have.length( 1 );
+                } );
+
+                it( "Count subscribe eq 1", function() {
+                    expect( store.byName ).to.have.deep.property( "foo.subscribe" )
+                        .that.to.have.length( 1 );
+                } );
+            } );
+
+            describe( "Event parsed bar", function() {
+                it( "Empty publish", function() {
+                    expect( store.byName.bar.publish ).to.be.empty;
+                } );
+
+                it( "Count subscribe eq 1", function() {
+                    expect( store.byName ).to.have.deep.property( "bar.subscribe" )
+                        .that.to.have.length( 1 );
+                } );
+            } )
+        } );
+
+        describe( "Using define with module name", function() {
+            var sample,
+                store;
+
+            sample = function() {
+                define(
+                    "my-module",
+                    [ "jquery", "../node_modules/pubsub-js/src/pubsub", "react" ],
+                    function( $, PubSub, React ) {
+                        PubSub.subscribe( "foo", function() {
+                            PubSub.subscribe( "bar", function() {
+                                PubSub.publish( "foo", 1 );
+                            } )
+                        } );
+
+                        PubSub.publish( "bar", 2 );
+                        PubSub.subscribe( "foo", function() {
+                            return 1;
+                        } )
+                    }
+                );
+
+            };
+
+            store = new Store();
+
+            processCode( "(" + sample.toString().replace( /\s+/g, "" ) + ")", "", store, true );
+
+            describe( "Event parsed foo", function() {
+                it( "Count publish eq 1", function() {
+                    expect( store.byName ).to.have.deep.property( "foo.publish" )
+                        .that.to.have.length( 1 );
+                } );
+
+                it( "Count subscribe eq 2", function() {
+                    expect( store.byName ).to.have.deep.property( "foo.subscribe" )
+                        .that.to.have.length( 2 );
+                } );
+            } );
+
+            describe( "Event parsed bar", function() {
+                it( "Count publish eq 1", function() {
+                    expect( store.byName ).to.have.deep.property( "bar.publish" )
+                        .that.to.have.length( 1 );
+                } );
+
+                it( "Count subscribe eq 1", function() {
+                    expect( store.byName ).to.have.deep.property( "bar.subscribe" )
+                        .that.to.have.length( 1 );
+                } );
+            } )
+        } )
+    } )
+
 } );
