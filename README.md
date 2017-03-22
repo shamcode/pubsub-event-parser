@@ -4,12 +4,12 @@
 
 A simple search using events [PubSubJs library](https://github.com/mroderick/PubSubJS)
 
-###Setup
+### Setup
 ```
 npm install pubsub-event-parser
 ```
 
-###Usage
+### Usage
 From command line 
 ```
 node node_modules/pubsub-event-parser/main.js path/to/source/file/or/directory
@@ -38,7 +38,7 @@ pubsubParser.procecCode(
 console.log( store.byName.foo.publish[ 0 ].code );
 ```
 
-###Documentation
+### Documentation
 See generated JSDoc on [site](http://shamcode.github.io/pubsub-event-parser/docs/index.html)
 
 ### License
